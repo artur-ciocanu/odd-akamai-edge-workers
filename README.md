@@ -1,4 +1,6 @@
 # Background
+**CAUTION: This is working in progress**
+
 This repository tries to demonstrate how we can leverage Adobe Target NodeJS SDK On-Device Decisioning functionality from an Akamai Edge worker.
 
 # Development
