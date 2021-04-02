@@ -1,5 +1,5 @@
 # Background
-This repository tries to demonstrate how we can leverage Target ODD from an Akamai Edge worker.
+This repository tries to demonstrate how we can leverage Adobe Target NodeJS SDK On-Device Decisioning functionality from an Akamai Edge worker.
 
 # Development
 There are a few prerequisites:
