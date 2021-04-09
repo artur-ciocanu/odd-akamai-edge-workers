@@ -1,4 +1,4 @@
 {
-  "edgeworker-version": "0.1",
+  "edgeworker-version": "0.24",
   "description" : "Target NodeJS SDK ODD in Akamai Edge Worker"
 }

@@ -4,6 +4,11 @@ import { logger } from "log";
 import TargetClient from "@adobe/target-nodejs-sdk";
 import RULES from "./rules";
 
+const STATUS = 200;
+const HEADERS = {
+  "Content-Type": ["application/json"]
+};
+
 const createTargetClient = () => {
   return new Promise(resolve => {
     const result = TargetClient.create({
@@ -11,6 +16,8 @@ const createTargetClient = () => {
       organizationId: "74F652E95F1B16FE0A495C92@AdobeOrg",
       decisioningMethod: "on-device",
       artifactPayload: RULES,
+      pollingInterval: 0, // "0" prevents polling, if artifactPayload is provided
+      targetLocationHint: "34", // prevent cluster discovery
       logger: logger,
       fetchApi: httpRequest,
       events: {
@@ -21,21 +28,24 @@ const createTargetClient = () => {
 };
 
 export async function responseProvider(request) {
-  const response = await handleRequest(request);
+  const deliveryRequest = {      
+    execute: {
+      mboxes: [{
+        index: 0,
+        name: "mbox-params",
+        parameters: {
+          foo: "bar"
+        }
+      }]
+    }
+  };
 
-  return Promise.resolve(createResponse(
-    200,
-    {"Content-Type": ["application/json"]},
-    JSON.stringify(response)
-  ));
-}
+  logger.log("Received request", JSON.stringify(request));
 
-async function handleRequest(request) {
-  // Need to figure out how to retrieve POST body, is this the right way???
-  const body = await request.json();
-  
-  return await createTargetClient()
-  .then(client => client.getOffers({request: body}))
-  .then(deliveryResponse => deliveryResponse.response)
-  .catch(error => error);
+  const client = await createTargetClient();
+  const { response } = await client.getOffers({ request: deliveryRequest });
+
+  logger.log("Sending response", JSON.stringify(response));
+
+  return createResponse(STATUS, HEADERS, JSON.stringify(response));
 }

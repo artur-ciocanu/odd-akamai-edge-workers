@@ -9,7 +9,7 @@
     "postbuild": "cp bundle.json dist/bundle.json && cd dist && tar -czvf odd.tgz main.js bundle.json"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@adobe/target-nodejs-sdk": "^2.1.1"
   },
