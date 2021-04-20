@@ -1,14 +1,12 @@
 # Background
-**CAUTION: This is working in progress**
+This repository tries to demonstrate how we can leverage `Adobe Target NodeJS SDK` `On-Device Decisioning functionality` from an `Akamai Edge Worker`.
 
-This repository tries to demonstrate how we can leverage `Adobe Target NodeJS SDK` On-Device Decisioning functionality from an `Akamai Edge Worker`.
-
-# Development
+# Prerequisites
 There are a few prerequisites:
 - `Akamai` credentials
 - `Akamai CLI`
 - `Akamai CLI` with `Edge Workers` plugin enabled
-- `Akamai` contract with `Edge Workers` enabled
+- `Akamai` contract with `Edge Workers` enabled. You'll need Ion or similar product, please check `Akamai` documentation
 
 ## Akamai Credentials
 In order to use `Akamai CLI` we need credentials, using `Akamai IAM` we should create a so called "API Client". Once the API Client is created we can download the credentials and add them to `.edgerc` file in our user home directory.
@@ -29,11 +27,7 @@ We will need to add `Edge Workers` support to `Akamai CLI`. This can be done by 
 $ akamai install edgeworkers
 ```
 
-## Code bundling
-All the code can be found in the `src` folder. We will be using `NPM` scripts to build and package the bundle. `Akamai Edge Workers` requires all the code to be packaged in a `tgz` archive. The `NPM` `build` script takes care of JavaScript bundling using `Rollup` as well as packaging the bundled `main.js` file and `bundle.json` required by `Edge Workers`.
-
-To create the `Edge Worker` `tgz` we should execute:
-```bash
-$ npm run build
-```
-NOTE: This has been tested on a Mac OS X environment
+# Development
+In order to automate the `Akamai` provisioning for `Akamai EdgeWorkers` we will be using `Terraform`. To make it easier to navigate the repository, the code is split in:
+- `terraform` - this folder contains all the `Terraform` scripts required to provision resources like edge host name, property, etc
+- `script` - this folder contains the source code for `Akamai EdgeWorker` plus all the build and bundling logic.

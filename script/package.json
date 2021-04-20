@@ -6,7 +6,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "NODE_ENV=production rollup -c rollup.config.js",
-    "postbuild": "cp bundle.json dist/bundle.json && cd dist && tar -czvf odd.tgz main.js bundle.json"
+    "postbuild": "cp src/bundle.json dist/bundle.json && cd dist && tar -czvf odd.tgz main.js bundle.json"
   },
   "author": "",
   "license": "Apache-2.0",

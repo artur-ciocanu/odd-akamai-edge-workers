@@ -1,0 +1,4 @@
+{
+  "edgeworker-version": "0.24",
+  "description" : "Target NodeJS SDK On-Device Decisioning in Akamai EdgeWorkers"
+}

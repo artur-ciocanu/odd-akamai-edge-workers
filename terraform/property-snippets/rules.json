@@ -1,0 +1,171 @@
+{
+  "rules": {
+      "name": "default",
+      "children": [
+          {
+              "name": "Edge Worker",
+              "children": [],
+              "behaviors": [
+                  {
+                      "name": "edgeWorker",
+                      "options": {
+                          "enabled": true,
+                          "createEdgeWorker": "",
+                          "edgeWorkerId": "${env.edge_worker_id}",
+                          "resourceTier": ""
+                      }
+                  }
+              ],
+              "criteria": [
+                  {
+                      "name": "path",
+                      "options": {
+                          "matchOperator": "MATCHES_ONE_OF",
+                          "values": [
+                              "/v1/personalization"
+                          ],
+                          "matchCaseSensitive": false,
+                          "normalize": false
+                      }
+                  }
+              ],
+              "criteriaMustSatisfy": "all"
+          },
+          {
+              "name": "Augment insights",
+              "children": [
+                  {
+                      "name": "Traffic reporting",
+                      "children": [],
+                      "behaviors": [
+                          {
+                              "name": "cpCode",
+                              "options": {
+                                  "value": {
+                                      "id": "${env.cp_code_id}",
+                                      "description": "${env.cp_code_name}",
+                                      "products": [
+                                          "${env.product_name}"
+                                      ],
+                                      "name": "${env.cp_code_name}"
+                                  }
+                              }
+                          }
+                      ],
+                      "criteria": [],
+                      "criteriaMustSatisfy": "all",
+                      "comments": "Identify your main traffic segments so you can granularly zoom in your traffic statistics like hits, bandwidth, offload, response codes, and errors."
+                  }
+              ],
+              "behaviors": [],
+              "criteria": [],
+              "criteriaMustSatisfy": "all",
+              "comments": "Control the settings related to monitoring and reporting. This gives you additional visibility into your traffic and audiences."
+          },
+          {
+              "name": "Completely Static Content",
+              "children": [],
+              "behaviors": [
+                  {
+                      "name": "caching",
+                      "options": {
+                          "behavior": "MAX_AGE",
+                          "ttl": "365d",
+                          "mustRevalidate": false
+                      }
+                  }
+              ],
+              "criteria": [
+                  {
+                      "name": "fileExtension",
+                      "options": {
+                          "matchCaseSensitive": false,
+                          "matchOperator": "IS_ONE_OF",
+                          "values": [
+                              "css",
+                              "gif",
+                              "jpg",
+                              "js",
+                              "png",
+                              "pict",
+                              "tif",
+                              "tiff",
+                              "mid",
+                              "midi",
+                              "ttf",
+                              "eot",
+                              "woff",
+                              "woff2",
+                              "otf",
+                              "svg",
+                              "svgz",
+                              "webp",
+                              "jxr",
+                              "class",
+                              "jar",
+                              "jp2"
+                          ]
+                      }
+                  },
+                  {
+                      "name": "path",
+                      "options": {
+                          "matchCaseSensitive": false,
+                          "matchOperator": "MATCHES_ONE_OF",
+                          "values": [
+                              "/examplepath/*"
+                          ],
+                          "normalize": false
+                      }
+                  },
+                  {
+                      "name": "path",
+                      "options": {
+                          "matchCaseSensitive": false,
+                          "matchOperator": "DOES_NOT_MATCH_ONE_OF",
+                          "values": [
+                              "/examplepath/exception/*"
+                          ],
+                          "normalize": false
+                      }
+                  }
+              ],
+              "criteriaMustSatisfy": "any"
+          }
+      ],
+      "behaviors": [
+          {
+              "name": "origin",
+              "options": {
+                  "cacheKeyHostname": "ORIGIN_HOSTNAME",
+                  "compress": true,
+                  "enableTrueClientIp": true,
+                  "forwardHostHeader": "ORIGIN_HOSTNAME",
+                  "httpPort": 80,
+                  "httpsPort": 443,
+                  "originCertificate": "",
+                  "originSni": true,
+                  "originType": "CUSTOMER",
+                  "ports": "",
+                  "trueClientIpClientSetting": false,
+                  "trueClientIpHeader": "True-Client-IP",
+                  "verificationMode": "THIRD_PARTY",
+                  "hostname": "${env.origin_hostname}"
+              }
+          }
+      ],
+      "options": {
+          "is_secure": true
+      },
+      "variables": [
+          {
+              "name": "PMUSER_EW_DEBUG_KEY",
+              "value": "${env.edge_worker_debug_secret}",
+              "description": "Trace Header Secret Key",
+              "hidden": false,
+              "sensitive": false
+          }
+      ],
+      "comments": "The Default Rule template contains all the necessary and recommended behaviors. Rules are evaluated from top to bottom and the last matching rule wins."
+  }
+}
