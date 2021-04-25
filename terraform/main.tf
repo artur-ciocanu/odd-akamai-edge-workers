@@ -54,7 +54,7 @@ resource "akamai_edge_hostname" "hostname" {
   group_id      = var.group_id
   edge_hostname = var.edge_hostname
   ip_behavior   = "IPV6_COMPLIANCE"
-  certificate   = var.certifiate_enrollment_id
+  certificate   = var.certificate_enrollment_id
 }
 
 resource "akamai_property" "property" {
